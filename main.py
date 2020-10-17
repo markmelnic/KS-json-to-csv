@@ -41,17 +41,18 @@ FIRST_ROW = [
 
 
 def main() -> None:
-    with open("out.csv", "w") as out_csv:
+    with open("out.csv", "w", newline="") as out_csv:
         wr = csv.writer(out_csv)
         wr.writerow(FIRST_ROW)
         for entry in os.scandir("./"):
             if ".json" in entry.name:
                 with open(entry.name) as json_file:
                     data = json.load(json_file)
-                #print(data)
+                # print(data)
 
                 for pload in gen_payload(data):
                     print(pload)
+                    wr.writerow(pload)
                 break
 
 
@@ -198,27 +199,23 @@ def gen_payload(data: str) -> list:
 
     for d in defs:
         payload = [
-        date,
-        case_number,
-        county,
-        precinct,
-        disposition,
-        disposition_date,
-        disposition_amount,
-        prefix,
-        base_case,
-        suffix,
-        d,
-        plas,
-        # data["AttorneyName"],
-        # data["AttorneyPhone"],
-        # data["AttorneyAddress"],
-        # data["AttorneyCity"],
-        # data["AttorneyState"],
-        # data["AttorneyZip"],
-        # data["attorneycounty"],
+            date,
+            case_number,
+            county,
+            precinct,
+            disposition,
+            disposition_date,
+            disposition_amount,
+            prefix,
+            base_case,
+            suffix,
         ]
+        for item in d:
+            payload.append(item)
+        for item in plas[0]:
+            payload.append(item)
         yield payload
+
 
 if __name__ == "__main__":
     main()
