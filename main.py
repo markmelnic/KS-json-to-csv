@@ -1,5 +1,43 @@
 import os, csv, json
-from settings import *
+
+FIRST_ROW = [
+    "Filedate",
+    "CaseNumber",
+    "County",
+    "Precinct",
+    "Disposition",
+    "DispoDate",
+    "DispoAmount",
+    "Prefix",
+    "BaseCase",
+    "Suffix",
+    "DefendantName",
+    "SSN",
+    "Dob",
+    "DriversLicense",
+    "DefAddress",
+    "DefUnit",
+    "DefCity",
+    "DefState",
+    "DefZip",
+    "DefendantNameSkip",
+    "PltfNameInfo",
+    "PltfName",
+    "InCareOfName",
+    "PltfAddress",
+    "PltfCity",
+    "PltfState",
+    "PltfZip",
+    "PltfPhone",
+    "PltfCounty",
+    "AttorneyName",
+    "AttorneyPhone",
+    "AttorneyAddress",
+    "AttorneyCity",
+    "AttorneyState",
+    "AttorneyZip",
+    "attorneycounty",
+]
 
 def main() -> None:
     with open("out.csv", "w") as out_csv:
@@ -62,6 +100,7 @@ def gen_payload(data: str) -> list:
         suffix = data["Suffix"]
     except KeyError:
         suffix = ""
+
     payload = [
         date,
         case_number,
