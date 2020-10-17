@@ -48,10 +48,10 @@ def main() -> None:
             if ".json" in entry.name:
                 with open(entry.name) as json_file:
                     data = json.load(json_file)
-                print(data)
+                #print(data)
 
-                payload = gen_payload(data)
-                print(payload)
+                for pload in gen_payload(data):
+                    print(pload)
                 break
 
 
@@ -104,40 +104,40 @@ def gen_payload(data: str) -> list:
 
     # Defendants data
     defs = []
-    for d in data["Defendants"]:
+    for rec in data["Defendants"]:
         # name
-        name = d["Name"]
+        name = rec["Name"]
         # ssn
         try:
-            ssn = d["SSn"]
+            ssn = rec["SSn"]
         except KeyError:
             ssn = ""
         # dob
         try:
-            dob = d["Dob"]
+            dob = rec["Dob"]
         except KeyError:
             dob = ""
         # drivers license
         try:
-            dl = d["DriversLicense"]
+            dl = rec["DriversLicense"]
         except KeyError:
             dl = ""
         # address
-        address = d["FullAddress"]
+        address = rec["FullAddress"]
         # unit
         try:
-            unit = d["Unit"]
+            unit = rec["Unit"]
         except KeyError:
             unit = ""
         # city
-        city = d["City"]
+        city = rec["City"]
         # state
-        state = d["State"]
+        state = rec["State"]
         # zip code
-        zipc = d["ZipCode"]
+        zipc = rec["ZipCode"]
         # name skip
         try:
-            name_skip = d["NameSkip"]
+            name_skip = rec["NameSkip"]
         except KeyError:
             name_skip = ""
 
@@ -159,8 +159,45 @@ def gen_payload(data: str) -> list:
             )
 
     # Plaintiffs data
+    plas = []
+    for rec in data["Plaintiffs"]:
+        # name information
+        try:
+            name_info = rec["NameInfo"]
+        except KeyError:
+            name_info = ""
+        # name
+        name = rec["Name"]
+        # ssn
+        try:
+            care_of_name = rec["InCareOfName"]
+        except KeyError:
+            care_of_name = ""
+        # address
+        address = rec["FullAddress"]
+        # city
+        city = rec["City"]
+        # state
+        state = rec["State"]
+        # zip code
+        zipc = rec["ZipCode"]
+        # phone number
+        try:
+            phone = rec["Phone"]
+        except KeyError:
+            phone = ""
+        # county
+        try:
+            county = rec["Phone"]
+        except KeyError:
+            county = ""
 
-    payload = [
+        plas.append(
+            [name_info, name, care_of_name, address, city, state, zipc, phone, county]
+        )
+
+    for d in defs:
+        payload = [
         date,
         case_number,
         county,
@@ -171,16 +208,8 @@ def gen_payload(data: str) -> list:
         prefix,
         base_case,
         suffix,
-        defs,
-        # data["Plaintiffs"]["PltfNameInfo"],
-        # data["Plaintiffs"]["PltfName"],
-        # data["Plaintiffs"]["InCareOfName"],
-        # data["Plaintiffs"]["PltfAddress"],
-        # data["Plaintiffs"]["PltfCity"],
-        # data["Plaintiffs"]["PltfState"],
-        # data["Plaintiffs"]["PltfZip"],
-        # data["Plaintiffs"]["PltfPhone"],
-        # data["Plaintiffs"]["PltfCounty"],
+        d,
+        plas,
         # data["AttorneyName"],
         # data["AttorneyPhone"],
         # data["AttorneyAddress"],
@@ -188,9 +217,8 @@ def gen_payload(data: str) -> list:
         # data["AttorneyState"],
         # data["AttorneyZip"],
         # data["attorneycounty"],
-    ]
-    return payload
-
+        ]
+        yield payload
 
 if __name__ == "__main__":
     main()
