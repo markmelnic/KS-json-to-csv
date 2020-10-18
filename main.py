@@ -106,6 +106,31 @@ def gen_payload(data: str) -> list:
         suffix = ""
 
     # Defendants data
+    defs = gen_defendants(data)
+
+    # Plaintiffs data
+    plas = gen_plaintiffs(data)
+
+    for defender in defs:
+        payload = [
+            date,
+            case_number,
+            county,
+            precinct,
+            disposition,
+            disposition_date,
+            disposition_amount,
+            prefix,
+            base_case,
+            suffix,
+        ]
+        for item in defender:
+            payload.append(item)
+        for item in plas[0]:
+            payload.append(item)
+        yield payload
+
+def gen_defendants(data: str) -> list:
     defs = []
     for rec in data["Defendants"]:
         # name
@@ -160,8 +185,9 @@ def gen_payload(data: str) -> list:
                     name_skip,
                 ]
             )
+    return defs
 
-    # Plaintiffs data
+def gen_plaintiffs(data: str) -> list:
     plas = []
     for rec in data["Plaintiffs"]:
         # name information
@@ -198,26 +224,7 @@ def gen_payload(data: str) -> list:
         plas.append(
             [name_info, name, care_of_name, address, city, state, zipc, phone, county]
         )
-
-    for defender in defs:
-        payload = [
-            date,
-            case_number,
-            county,
-            precinct,
-            disposition,
-            disposition_date,
-            disposition_amount,
-            prefix,
-            base_case,
-            suffix,
-        ]
-        for item in defender:
-            payload.append(item)
-        for item in plas[0]:
-            payload.append(item)
-        yield payload
-
+    return plas
 
 if __name__ == "__main__":
     main()
