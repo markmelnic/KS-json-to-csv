@@ -48,21 +48,23 @@ def main() -> None:
             if ".json" in entry.name:
                 with open(entry.name) as json_file:
                     data = json.load(json_file)
-                # print(data)
-
                 for pload in gen_payload(data):
-                    print(pload)
                     wr.writerow(pload)
-                break
 
 
 def gen_payload(data: str) -> list:
     # date
-    date = data["FiledDate"]
+    try:
+        date = data["FiledDate"]
+    except KeyError:
+        date = ""
     # case number
     case_number = data["CaseNumber"]
     # county
-    county = data["County"]
+    try:
+        county = data["County"]
+    except KeyError:
+        county = ""
     # precinct
     try:
         precinct = data["Precinct"]
@@ -197,7 +199,7 @@ def gen_payload(data: str) -> list:
             [name_info, name, care_of_name, address, city, state, zipc, phone, county]
         )
 
-    for d in defs:
+    for defender in defs:
         payload = [
             date,
             case_number,
@@ -210,7 +212,7 @@ def gen_payload(data: str) -> list:
             base_case,
             suffix,
         ]
-        for item in d:
+        for item in defender:
             payload.append(item)
         for item in plas[0]:
             payload.append(item)
