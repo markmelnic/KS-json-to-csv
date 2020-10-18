@@ -71,6 +71,7 @@ def gen_payload(data: str) -> list:
             payload.append(item)
         yield payload
 
+
 def gen_case(data: str) -> list:
     # date
     try:
@@ -124,17 +125,18 @@ def gen_case(data: str) -> list:
     except KeyError:
         suffix = ""
     return [
-            date,
-            case_number,
-            county,
-            precinct,
-            disposition,
-            disposition_date,
-            disposition_amount,
-            prefix,
-            base_case,
-            suffix,
-        ]
+        date,
+        case_number,
+        county,
+        precinct,
+        disposition,
+        disposition_date,
+        disposition_amount,
+        prefix,
+        base_case,
+        suffix
+    ]
+
 
 def gen_defendants(data: str) -> list:
     defs = []
@@ -193,6 +195,7 @@ def gen_defendants(data: str) -> list:
             )
     return defs
 
+
 def gen_plaintiffs(data: str) -> list:
     plas = []
     for rec in data["Plaintiffs"]:
@@ -231,6 +234,7 @@ def gen_plaintiffs(data: str) -> list:
             [name_info, name, care_of_name, address, city, state, zipc, phone, county]
         )
     return plas
+
 
 if __name__ == "__main__":
     main()
