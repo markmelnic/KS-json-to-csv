@@ -62,14 +62,15 @@ def gen_payload(data: str) -> list:
     # Plaintiffs data
     plas = gen_plaintiffs(data)
 
+    payload = []
     for defender in defs:
-        payload = gen_data
+        data = []
+        data.extend(gen_data)
+        data.extend(defender)
+        data.extend(plas[0])
 
-        for item in defender:
-            payload.append(item)
-        for item in plas[0]:
-            payload.append(item)
-        yield payload
+        payload.append(data)
+    return payload
 
 
 def gen_case(data: str) -> list:
