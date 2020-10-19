@@ -158,11 +158,12 @@ def gen_defendants(data: str) -> list:
             dl = ""
         # address
         address = rec["FullAddress"]
+        adresplit = address.split(" ")
         # unit
-        try:
-            unit = rec["Unit"]
-        except KeyError:
-            unit = ""
+        unit = ""
+        for el in adresplit:
+            if "apt" == el.lower():
+                unit = adresplit[adresplit.index(el) + 1]
         # city
         city = rec["City"]
         # state
