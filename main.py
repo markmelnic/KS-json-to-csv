@@ -87,10 +87,7 @@ def gen_case(data: str) -> list:
     except KeyError:
         county = ""
     # precinct
-    try:
-        precinct = data["Precinct"]
-    except KeyError:
-        precinct = ""
+    precinct = case_number[:2]
     # disposition
     try:
         disposition = data["Disposition"]
@@ -135,7 +132,7 @@ def gen_case(data: str) -> list:
         disposition_amount,
         prefix,
         base_case,
-        suffix
+        suffix,
     ]
 
 
