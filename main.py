@@ -179,7 +179,7 @@ def gen_defendants(data: str) -> list:
         if "-" in name:
             defs.append(
                 [
-                    name.split("-")[0],
+                    name.split("-")[0] + "," + name.split(",")[1],
                     ssn,
                     dob,
                     dl,
