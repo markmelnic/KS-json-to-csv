@@ -100,7 +100,7 @@ def gen_case(data: str) -> list:
         disposition_date = ""
     # disposition amount
     try:
-        disposition = data["Disposition"]
+        disposition_amount = data["Disposition"]
     except KeyError:
         disposition_amount = ""
     # prefix
@@ -176,6 +176,7 @@ def gen_defendants(data: str) -> list:
         except KeyError:
             name_skip = ""
 
+        address = address.replace(city, '').replace(state, '').replace(zipc, '').replace(',', '')
         defs.append([name, ssn, dob, dl, address, unit, city, state, zipc, name_skip])
         if "-" in name:
             defs.append(
@@ -229,6 +230,7 @@ def gen_plaintiffs(data: str) -> list:
         except KeyError:
             county = ""
 
+        address = address.replace(city, '').replace(state, '').replace(zipc, '').replace(',', '')
         plas.append(
             [name_info, name, care_of_name, address, city, state, zipc, phone, county]
         )
